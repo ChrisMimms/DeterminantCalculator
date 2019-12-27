@@ -9,7 +9,18 @@ function setMatrixSize()
   
   if (userRows !== userColumns)
   {
-    alert(userRows + " x " + userColumns + " is not a valid matrix, please try again.");
+    alert(userRows + " x " + userColumns + " is not a valid matrix for performing determinant calculations.  Your matrix must be a square, please try again.");
+    refresh();
+  }
+  else if (userRows <= 1) 
+  {
+    alert("Matrix size must be atleast 2x2, please try again.")
+    refresh();
+  }
+  else if (isNaN(userRows)) 
+  {
+    alert("The number of rows and columns must be a positive decimal number, please try again.")
+    refresh();
   }
   else 
   {
@@ -41,6 +52,7 @@ function drawMatrixInputField()
     btn.type = "button";
     btn.className = "input_button";
     btn.value = "Calculate Determinant";
+    btn.id = "calc_determinant"
     btn.onclick = createDisplayResult;
     document.body.appendChild(btn);
 }
@@ -61,10 +73,19 @@ function createDisplayResult()
     }
 
     var result = calculateDeterminant(userDefinedMatrix);
+    var destroy = document.getElementById("calc_determinant");
+    destroy.remove();
+
     var displayResult = document.createElement("p");
     displayResult.className = "final_result";
-    displayResult.innerHTML = "<br>The determinant of your matrix is " + result;
+    displayResult.innerHTML = "The determinant of your matrix: |A| = " + result;
     document.body.appendChild(displayResult);
+
+    var refreshButton = document.createElement("button");
+    refreshButton.innerHTML = "Start Over";
+    refreshButton.className = "input_button";
+    refreshButton.onclick = refresh;
+    document.body.appendChild(refreshButton);
 }
 
 // recursively calculate the determinant - the fun part
@@ -129,4 +150,9 @@ function createSubMatrix(theMatrix, startPosition)
         }
     }
     return subMatrix;
+}
+
+function refresh()
+{
+    location.reload();
 }
